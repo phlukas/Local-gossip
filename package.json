@@ -1,0 +1,23 @@
+{
+  "name": "local-gossip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phlukas/Local-gossip.git"
+  },
+  "author": "lukas.veckys",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phlukas/Local-gossip/issues"
+  },
+  "homepage": "https://github.com/phlukas/Local-gossip#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

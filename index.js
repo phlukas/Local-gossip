@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
+const user = require('./routers/user.router');
 const mongoose = require('mongoose');
-const Test = require('./models/test.model');
 
 const url = 'mongodb+srv://ZrEqDkEqlf:WGfpHdhNOl@cluster0.fjiti.mongodb.net/main?retryWrites=true&w=majority';
 
@@ -24,15 +24,6 @@ app.listen(port, () => {
   console.log('server is started');
 });
 
-app.get('/', (req, res) => {
-  var test = new Test();
-  test.name = 'Vardenis';
-  test.email = 'abc@abc.lt';
-  test.save((err, doc) => {
-    if (err) {
-      console.log('Cannnot save test model');
-    } else {
-      res.send(test);
-    }
-  });
-});
+app.use(express.json());
+
+app.use('/user', user);

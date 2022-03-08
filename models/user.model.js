@@ -4,9 +4,6 @@ var userSchema = new mongoose.Schema({
   dateCreated: {
     type: Date,
   },
-  currentChatRoomId: {
-    type: String,
-  },
   name: {
     type: String,
   },
@@ -36,9 +33,6 @@ var userSchema = new mongoose.Schema({
   },
   showProfile: {
     type: Boolean,
-  },
-  Longitude: {
-    type: Number,
   },
   chatRoomIds: {
     type: Array,

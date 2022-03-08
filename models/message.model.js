@@ -7,6 +7,12 @@ var messageSchema = new mongoose.Schema({
   chatRoomId: {
     type: String,
   },
+  content: {
+    type: String,
+  },
+  senderId: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('MessageModel', messageSchema);

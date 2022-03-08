@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const user = require('./routers/user.router');
+const message = require('./routers/message.router');
 const mongoose = require('mongoose');
 
 const url = 'mongodb+srv://ZrEqDkEqlf:WGfpHdhNOl@cluster0.fjiti.mongodb.net/main?retryWrites=true&w=majority';
@@ -27,3 +28,5 @@ app.listen(port, () => {
 app.use(express.json());
 
 app.use('/user', user);
+
+app.use('/message', message);

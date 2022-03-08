@@ -16,7 +16,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   var user = new User();
-
+  
   user.dateCreated = Date.now();
   console.log(req.body);
   user.name = req.body.name;

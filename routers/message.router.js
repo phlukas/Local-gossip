@@ -8,12 +8,12 @@ router.get('/', (req, res) => {
   });
 });
 
-/*
-router.get('/:chatRoomId', (req, res) => {
+
+router.get('/:id', (req, res) => {
   Message.findById(req.query.chatRoomId, (err, result) => {
     res.send(result);
   });
-});*/
+});
 
 router.post('/', (req, res) => {
   var message = new Message();

@@ -18,7 +18,6 @@ router.post('/', (req, res) => {
   var user = new User();
 
   user.dateCreated = Date.now();
-  console.log(req.body);
   user.name = req.body.name;
   user.email = req.body.email;
   user.Password = req.body.Password;

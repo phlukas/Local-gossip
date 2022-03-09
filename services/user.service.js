@@ -1,8 +1,8 @@
 const User = require('../models/user.model');
 
 function GetUser(userId) {
-  return User.findById(userId, (err, res) => {
-    return res;
+  return new Promise(async (resolve, reject) => {
+    resolve(await User.findById(userId));
   });
 }
 

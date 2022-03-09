@@ -32,12 +32,11 @@ mongoose.connect(
 var searchingClients = [];
 
 io.on('connection', (socket) => {
-  socket.on('searching', (userId, kilometers) => {
-    searchingClients.push({ socketId: socket.id, userId: socket.id, radius: kilometers });
-    console.log(userId);
-    console.log(kilometers);
+  socket.on('searching', (searchingModel) => {
+    searchingClients.push({ socketId: socket.id, userId: searchingModel.userId, radius: searchingModel.kilometers });
     console.log(searchingClients);
     FindPair();
+    console.log('Po paieskos: ' + searchingClients);
   });
 });
 
@@ -47,15 +46,19 @@ app.use(express.json());
 
 app.use('/user', user);
 
-function FindPair(socket) {
+async function FindPair(socket) {
   for (var a = 0; a < searchingClients.length - 1; a++) {
     for (var b = a + 1; b < searchingClients.length; b++) {
-      let userA = GetUser(searchingClients[a].userId);
-      let userB = GetUser(searchingClients[b].userId);
+      let userA = await GetUser(searchingClients[a].userId);
+      let userB = await GetUser(searchingClients[b].userId);
       let dist = distance(userA.Latitude, userB.Latitude, userA.Longitude, userB.Longitude);
+
       if (dist <= searchingClients[a].radius && dist <= searchingClients[b].radius) {
         io.to(searchingClients[a].socketId).emit('test', 'match');
         io.to(searchingClients[b].socketId).emit('test', 'match');
+        searchingClients.splice(a, 1);
+        searchingClients.splice(b, 1);
+        return;
       }
     }
   }
@@ -74,7 +77,6 @@ function distance(lat1, lat2, lon1, lon2) {
   let dlon = lon2 - lon1;
   let dlat = lat2 - lat1;
   let a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
-
   let c = 2 * Math.asin(Math.sqrt(a));
 
   // Radius of earth in kilometers. Use 3956 for miles

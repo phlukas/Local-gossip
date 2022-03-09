@@ -10,6 +10,7 @@ const io = new Server(httpServer, {
 });
 const port = process.env.PORT || 5000;
 const user = require('./routers/user.router');
+const message = require('./routers/message.router');
 const mongoose = require('mongoose');
 const { GetUser } = require('./services/user.service');
 
@@ -46,6 +47,7 @@ app.use(express.json());
 
 app.use('/user', user);
 
+app.use('/message', message);
 async function FindPair(socket) {
   for (var a = 0; a < searchingClients.length - 1; a++) {
     for (var b = a + 1; b < searchingClients.length; b++) {

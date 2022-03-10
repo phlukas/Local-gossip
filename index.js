@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://amritb.github.io',
+    origin: '*',
   },
 });
 const port = process.env.PORT || 5000;
@@ -48,6 +48,7 @@ app.use(express.json());
 app.use('/user', user);
 
 app.use('/message', message);
+
 async function FindPair(socket) {
   for (var a = 0; a < searchingClients.length - 1; a++) {
     for (var b = a + 1; b < searchingClients.length; b++) {

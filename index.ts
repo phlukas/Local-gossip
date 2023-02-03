@@ -80,4 +80,4 @@ app.route("/").get((req: any, res: any) => {
     res.send(listEndpoints(app));
 });
 
-console.log(listEndpoints(app));
+console.log("test");

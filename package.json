@@ -1,50 +1,54 @@
 {
-  "name": "local-gossip",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "rimraf dist && tsc",
-    "preserve": "npm run build",
-    "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
-    "prestart": "npm run build",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
-    "startNodemon": "cross-env NODE_ENV=production nodemon dist/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/phlukas/Local-gossip.git"
-  },
-  "author": "lukas.veckys",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/phlukas/Local-gossip/issues"
-  },
-  "homepage": "https://github.com/phlukas/Local-gossip#readme",
-  "dependencies": {
-    "@types/body-parser": "^1.19.2",
-    "@types/lodash": "^4.14.181",
-    "@types/mongoose": "^5.11.97",
-    "body-parser": "^1.19.2",
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "express-list-endpoints": "^6.0.0",
-    "helmet": "^5.0.2",
-    "lodash": "^4.17.21",
-    "mongoose": "^6.2.9",
-    "rimraf": "^3.0.2",
-    "socket.io": "^4.4.1",
-    "ts-essentials": "^9.1.2"
-  },
-  "devDependencies": {
-    "@tsconfig/node16": "^1.0.2",
-    "@types/express": "^4.17.13",
-    "@types/node": "^17.0.23",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
-    "eslint": "^8.12.0",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
-  }
+    "name": "local-gossip",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "rimraf dist && tsc",
+        "preserve": "npm run build",
+        "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+        "prestart": "npm run build",
+        "start": "cross-env NODE_ENV=production node dist/index.js",
+        "startNodemon": "cross-env NODE_ENV=production nodemon dist/index.js",
+        "lint": "npx eslint ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/phlukas/Local-gossip.git"
+    },
+    "author": "lukas.veckys",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/phlukas/Local-gossip/issues"
+    },
+    "homepage": "https://github.com/phlukas/Local-gossip#readme",
+    "dependencies": {
+        "body-parser": "^1.19.2",
+        "cross-env": "^7.0.3",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.3",
+        "express-list-endpoints": "^6.0.0",
+        "helmet": "^5.0.2",
+        "lodash": "^4.17.21",
+        "mongoose": "^6.2.9",
+        "rimraf": "^3.0.2",
+        "socket.io": "^4.4.1",
+        "ts-essentials": "^9.1.2"
+    },
+    "devDependencies": {
+        "@tsconfig/node16": "^1.0.2",
+        "@types/body-parser": "^1.19.2",
+        "@types/express": "^4.17.13",
+        "@types/express-list-endpoints": "^6.0.0",
+        "@types/lodash": "^4.14.181",
+        "@types/mongoose": "^5.11.97",
+        "@types/node": "^17.0.23",
+        "@typescript-eslint/eslint-plugin": "^5.17.0",
+        "@typescript-eslint/parser": "^5.17.0",
+        "eslint": "^8.33.0",
+        "nodemon": "^2.0.20",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.6.3",
+        "concurrently": "^7.6.0"
+    }
 }

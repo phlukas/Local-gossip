@@ -1,17 +1,18 @@
-const express = require("express");
-const app = express();
-const { createServer } = require("http");
-const { Server } = require("socket.io");
-const httpServer = createServer(app);
-const port = process.env.PORT || 5000;
-const user = require("./routers/user.router");
-const message = require("./routers/message.router");
+import express from "express";
+import { createServer } from "http";
+import { Server, Socket } from "socket.io";
+import user from "./routers/user.router";
+import message from "./routers/message.router";
 import { Client, MesssageModel, SearchingModel } from "./types";
 import { findPairAsync, printRemainingUsers, sendMessage } from "./utilities";
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 import { chatRoomEventGroup, messageEvent, userEventGroup } from "./constants";
-var _ = require("lodash");
-const listEndpoints = require("express-list-endpoints");
+import _ from "lodash";
+import listEndpoints from "express-list-endpoints";
+
+const app = express();
+const httpServer = createServer(app);
+const port = process.env.PORT || 5000;
 
 const databaseUrl = "mongodb+srv://ZrEqDkEqlf:WGfpHdhNOl@cluster0.fjiti.mongodb.net/main?retryWrites=true&w=majority";
 
@@ -21,23 +22,17 @@ const io = new Server(httpServer, {
     },
 });
 
-mongoose.connect(
-    databaseUrl,
-    {
-        useNewUrlParser: true,
-    },
-    (err: any) => {
-        if (!err) {
-            console.log("Connection to the database succeeded");
-        } else {
-            console.log("Error in connection to database: " + err);
-        }
+mongoose.connect(databaseUrl, {}, (err: unknown) => {
+    if (!err) {
+        console.log("Connection to the database succeeded");
+    } else {
+        console.log("Error in connection to database: " + err);
     }
-);
+});
 
-var searchingClients: Client[] = [];
+const searchingClients: Client[] = [];
 
-io.on("connection", (socket: any) => {
+io.on("connection", (socket: Socket) => {
     socket.on(userEventGroup, (searchingModel: SearchingModel) => {
         searchingClients.push({
             socket: socket,
@@ -76,8 +71,6 @@ app.use("/user", user);
 
 app.use("/message", message);
 
-app.route("/").get((req: any, res: any) => {
+app.route("/").get((req, res) => {
     res.send(listEndpoints(app));
 });
-
-console.log("test");

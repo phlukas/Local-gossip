@@ -1,26 +1,17 @@
 import express from "express";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
 import user from "./routers/user.router";
 import message from "./routers/message.router";
-import { Client, MesssageModel, SearchingModel } from "./types";
-import { findPairAsync, printRemainingUsers, sendMessage } from "./utilities";
 import mongoose from "mongoose";
-import { chatRoomEventGroup, messageEvent, userEventGroup } from "./constants";
 import _ from "lodash";
 import listEndpoints from "express-list-endpoints";
+import socketManager from "./socketManager";
 
 const app = express();
 const httpServer = createServer(app);
 const port = process.env.PORT || 5000;
 
 const databaseUrl = "mongodb+srv://ZrEqDkEqlf:WGfpHdhNOl@cluster0.fjiti.mongodb.net/main?retryWrites=true&w=majority";
-
-const io = new Server(httpServer, {
-    cors: {
-        origin: "*",
-    },
-});
 
 mongoose.connect(databaseUrl, {}, (err: unknown) => {
     if (!err) {
@@ -30,38 +21,9 @@ mongoose.connect(databaseUrl, {}, (err: unknown) => {
     }
 });
 
-const searchingClients: Client[] = [];
+//Start socket.io
 
-io.on("connection", (socket: Socket) => {
-    socket.on(userEventGroup, (searchingModel: SearchingModel) => {
-        searchingClients.push({
-            socket: socket,
-            userId: searchingModel.userId,
-            radius: searchingModel.kilometers,
-        });
-        findPairAsync(searchingClients);
-    });
-
-    socket.on(chatRoomEventGroup, (messageModel: MesssageModel) => {
-        if (messageModel.type === messageEvent) {
-            console.log("Gauta zinute:");
-            console.log(messageModel);
-            sendMessage(messageModel, io);
-        }
-    });
-
-    const interval = setInterval(function () {
-        socket.emit("time", Date.now()); // This will be deleted in the near future because it was only created to test front-end
-    }, 5000);
-
-    socket.on("disconnect", () => {
-        clearInterval(interval); // This will be deleted in the near future because it was only created to test front-end
-        _.remove(searchingClients, (client: Client) => {
-            return client.socket === socket;
-        });
-        printRemainingUsers(searchingClients);
-    });
-});
+socketManager(httpServer);
 
 httpServer.listen(port);
 

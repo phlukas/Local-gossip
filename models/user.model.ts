@@ -13,6 +13,7 @@ export interface IUser extends Document {
     showLocation?: boolean;
     showProfile?: boolean;
     chatRoomId?: string;
+    socketId?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -50,6 +51,9 @@ const userSchema = new Schema<IUser>({
         type: Boolean,
     },
     chatRoomId: {
+        type: String,
+    },
+    socketId: {
         type: String,
     },
 });

@@ -1,18 +1,27 @@
-import { Client, MesssageModel } from './types';
-import { GetUser, UpdateUser } from './services/user.service';
-import { chatRoomEventGroup, chatRoomFoundEvent, userEventGroup, messageEvent } from './constants';
-import * as _ from 'lodash';
-import { IUser } from './models/user.model';
-import { Server, Socket } from 'socket.io';
+import { Socket } from 'socket.io';
+import { Client, SearchingModel } from '../../../types';
+import { IUser, User } from '../../../models/user.model';
+import sendChatRoomFoundEvent from '../../chatRoomEventGroup/outgoingEvents/chatRoomFoundEvent';
+import _ from 'lodash';
 
-export async function findPairAsync(searchingClients: Client[]) {
+export default (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
+  searchingClients.push({
+    socket: socket,
+    userId: searchingModel.userId,
+    radius: searchingModel.kilometers,
+  });
+
+  findPairAsync(searchingClients);
+};
+
+async function findPairAsync(searchingClients: Client[]) {
   for (let a = 0; a < searchingClients.length - 1; a++) {
     for (let b = a + 1; b < searchingClients.length; b++) {
-      const userA: IUser | null = await GetUser(searchingClients[a].userId);
-      const userB: IUser | null = await GetUser(searchingClients[b].userId);
+      const userA: IUser | null = await User.findById(searchingClients[a].userId);
+      const userB: IUser | null = await User.findById(searchingClients[b].userId);
+
       console.log(searchingClients);
 
-      //Check if users have valid data
       if (
         userA === null ||
         userB === null ||
@@ -35,25 +44,19 @@ export async function findPairAsync(searchingClients: Client[]) {
         searchingClients[a].socket.join(chatRoomId);
         searchingClients[b].socket.join(chatRoomId);
 
-        searchingClients[a].socket.emit(userEventGroup, {
-          type: chatRoomFoundEvent,
-          chatRoomId: chatRoomId,
-          partnerDistance: dist,
-        });
-        searchingClients[b].socket.emit(userEventGroup, {
-          type: chatRoomFoundEvent,
-          chatRoomId: chatRoomId,
-          partnerDistance: dist,
-        });
+        sendChatRoomFoundEvent(searchingClients[a].socket, chatRoomId, dist);
+        sendChatRoomFoundEvent(searchingClients[b].socket, chatRoomId, dist);
 
         _.remove(searchingClients, (client: Client) => {
           return client.userId !== firstUserId;
         });
+
         _.remove(searchingClients, (client: Client) => {
           return client.userId !== secondUserId;
         });
 
         printRemainingUsers(searchingClients);
+
         return;
       }
     }
@@ -85,9 +88,7 @@ function distance(lat1: number, lat2: number, lon1: number, lon2: number) {
   // Haversine formula
   const dlon = lon2 - lon1;
   const dlat = lat2 - lat1;
-  const a =
-    Math.pow(Math.sin(dlat / 2), 2) +
-    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
+  const a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
   const c = 2 * Math.asin(Math.sqrt(a));
 
   // Radius of earth in kilometers.
@@ -95,25 +96,4 @@ function distance(lat1: number, lat2: number, lon1: number, lon2: number) {
 
   // calculate the result
   return c * r;
-}
-
-export async function sendMessage(messageModel: MesssageModel, io: Server, socket: Socket) {
-  console.log('Sending message:');
-  console.log(messageModel);
-
-  let lastAddedRoom;
-
-  socket.rooms.forEach((roomId) => {
-    lastAddedRoom = roomId;
-  });
-
-  if (lastAddedRoom) {
-    io.to(lastAddedRoom).emit(chatRoomEventGroup, {
-      type: messageEvent, //tiesiog ...messsageModel panaudoti
-      userId: messageModel.userId,
-      message: messageModel.message,
-    });
-  } else {
-    console.error('Message failed to send because socket was not in the valid room.');
-  }
 }

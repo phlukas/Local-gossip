@@ -1,7 +1,0 @@
-SOCKET.IO EVENTS:
-
-user:
-    searching
-    chatRoomFound
-chatRoom:
-    message

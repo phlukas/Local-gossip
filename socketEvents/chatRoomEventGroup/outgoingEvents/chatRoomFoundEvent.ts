@@ -1,8 +1,8 @@
 import { Socket } from 'socket.io';
-import { chatRoomFoundEvent, userEventGroup } from '../../../eventConstants';
+import { chatRoomFoundEvent, startSearchingEvent } from '../../../eventConstants';
 
 export default (socket: Socket, chatRoomId: string, dist: number) => {
-  socket.emit(userEventGroup, {
+  socket.emit(startSearchingEvent, {
     type: chatRoomFoundEvent,
     chatRoomId: chatRoomId,
     partnerDistance: dist,

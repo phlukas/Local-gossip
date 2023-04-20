@@ -4,25 +4,26 @@ import { IUser, User } from '../../../models/user.model';
 import sendChatRoomFoundEvent from '../../chatRoomEventGroup/outgoingEvents/chatRoomFoundEvent';
 import _ from 'lodash';
 import { chatRoomNotFoundEvent } from '../../../eventConstants';
+import cancelSearchingEvent from './cancelSearchingEvent';
 
-export default (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
+export default async (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
   searchingClients.push({
     socket: socket,
     userId: searchingModel.userId,
     radius: searchingModel.kilometers,
   });
 
-  const interval = setInterval(async () => {
-    await findPairAsync(searchingClients);
-  }, 3000);
+  const foundPartner: boolean = await findPairAsync(searchingClients);
 
-  setTimeout(() => {
-    clearInterval(interval);
-    socket.emit(chatRoomNotFoundEvent);
-  }, 300000);
+  if (foundPartner) {
+    setTimeout(() => {
+      cancelSearchingEvent(searchingClients, searchingModel);
+      socket.emit(chatRoomNotFoundEvent);
+    }, 10000);
+  }
 };
 
-async function findPairAsync(searchingClients: Client[]) {
+async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
   for (let a = 0; a < searchingClients.length - 1; a++) {
     for (let b = a + 1; b < searchingClients.length; b++) {
       const userA: IUser | null = await User.findById(searchingClients[a].userId);
@@ -65,11 +66,12 @@ async function findPairAsync(searchingClients: Client[]) {
 
         printRemainingUsers(searchingClients);
 
-        return;
+        return true;
       }
     }
   }
   printRemainingUsers(searchingClients);
+  return false;
 }
 
 export function printRemainingUsers(searchingClients: Client[]) {
@@ -78,7 +80,6 @@ export function printRemainingUsers(searchingClients: Client[]) {
   }
   console.log('Ieskantys partneriu vartotojai: ');
   searchingClients.forEach((client: Client) => {
-    console.log('--------------');
     console.log(client.userId);
     console.log(client.radius + 'km');
   });

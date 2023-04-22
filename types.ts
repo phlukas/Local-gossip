@@ -16,3 +16,9 @@ export type MesssageModel = {
   userId: string;
   message: string;
 };
+
+export type updateLocationModel = {
+  userId: string;
+  lat: number;
+  lot: number;
+};

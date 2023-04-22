@@ -7,4 +7,10 @@ export const exitChatRoomEvent = 'exitChatRoom';
 
 export const messageEvent = 'message';
 
+export const startGameEvent = 'startGame';
+export const acceptGameEvent = 'acceptGame';
+export const cancelGameEvent = 'cancelGame';
+
+export const updateLocationEvent = 'updateLocation';
+
 export const chatRoomEventGroup = 'chatRoom'; // We can't delete this because prod will crash

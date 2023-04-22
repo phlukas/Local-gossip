@@ -5,6 +5,7 @@ import sendChatRoomFoundEvent from '../outgoingEvents/chatRoomFound.event';
 import _ from 'lodash';
 import { chatRoomNotFoundEvent } from '../../eventConstants';
 import cancelSearchingEvent from './cancelSearching.event';
+import { ChatRoom, IChatRoom } from '../../models/chatRoom.model';
 
 export default async (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
   searchingClients.push({
@@ -47,27 +48,41 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
       const dist = distance(userA.latitude, userB.latitude, userA.longitude, userB.longitude);
 
       if (dist <= searchingClients[a].radius && dist <= searchingClients[b].radius) {
-        const firstUserId = searchingClients[a].userId;
-        const secondUserId = searchingClients[b].userId;
-        const chatRoomId = firstUserId + secondUserId;
+        const chatRoom = new ChatRoom();
+        chatRoom.dateCreated = Date.now();
 
-        searchingClients[a].socket.join(chatRoomId);
-        searchingClients[b].socket.join(chatRoomId);
+        chatRoom.save(
+          (
+            err,
+            res: IChatRoom & {
+              _id: string;
+            }
+          ) => {
+            if (err) {
+              console.error('Cannnot save chatRoom: ' + err);
+            } else {
+              searchingClients[a].socket.join(res._id);
+              searchingClients[b].socket.join(res._id);
 
-        sendChatRoomFoundEvent(searchingClients[a].socket, chatRoomId, dist);
-        sendChatRoomFoundEvent(searchingClients[b].socket, chatRoomId, dist);
+              sendChatRoomFoundEvent(searchingClients[a].socket, res._id, dist);
+              sendChatRoomFoundEvent(searchingClients[b].socket, res._id, dist);
 
-        _.remove(searchingClients, (client: Client) => {
-          return client.userId !== firstUserId;
-        });
+              _.remove(searchingClients, (client: Client) => {
+                return client.userId !== searchingClients[a].userId;
+              });
 
-        _.remove(searchingClients, (client: Client) => {
-          return client.userId !== secondUserId;
-        });
+              _.remove(searchingClients, (client: Client) => {
+                return client.userId !== searchingClients[b].userId;
+              });
 
-        printRemainingUsers(searchingClients);
+              printRemainingUsers(searchingClients);
 
-        return true;
+              return true;
+            }
+
+            return false;
+          }
+        );
       }
     }
   }

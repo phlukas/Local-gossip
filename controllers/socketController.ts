@@ -1,12 +1,23 @@
 import { Client, MesssageModel, SearchingModel } from '../types';
 import sendMessage from '../socketEvents/incomingEvents/message.event';
-import { cancelSearchingEvent, exitChatRoomEvent, messageEvent, startSearchingEvent } from '../eventConstants';
+import {
+  acceptGameEvent,
+  cancelGameEvent,
+  cancelSearchingEvent,
+  exitChatRoomEvent,
+  messageEvent,
+  startGameEvent,
+  startSearchingEvent,
+} from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
 import startSearching from '../socketEvents/incomingEvents/startSearching.event';
 import cancelSearching from '../socketEvents/incomingEvents/cancelSearching.event';
 import disconnectEvent from '../socketEvents/disconnect.event';
 import exitChatRoom from '../socketEvents/incomingEvents/exitChatRoom.event';
+import startGame from '../socketEvents/incomingEvents/startGame.event';
+import acceptGame from '../socketEvents/incomingEvents/acceptGame.event';
+import cancelGame from '../socketEvents/incomingEvents/cancelGame.event';
 
 export default (httpServer: HttpServer) => {
   const io = new Server(httpServer, {
@@ -34,6 +45,18 @@ export default (httpServer: HttpServer) => {
 
     socket.on(exitChatRoomEvent, () => {
       exitChatRoom(socket, io);
+    });
+
+    socket.on(startGameEvent, () => {
+      startGame(socket);
+    });
+
+    socket.on(acceptGameEvent, () => {
+      acceptGame(socket);
+    });
+
+    socket.on(cancelGameEvent, () => {
+      cancelGame(socket);
     });
 
     socket.on('disconnect', () => {

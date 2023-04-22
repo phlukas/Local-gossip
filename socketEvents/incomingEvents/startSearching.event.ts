@@ -81,10 +81,10 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
 
               return true;
             }
-
-            return false;
           }
         );
+
+        return false;
       }
     }
   }

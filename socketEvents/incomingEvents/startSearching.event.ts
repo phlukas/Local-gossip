@@ -67,12 +67,14 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
               sendChatRoomFoundEvent(searchingClients[a].socket, res._id, dist);
               sendChatRoomFoundEvent(searchingClients[b].socket, res._id, dist);
 
+              console.log(searchingClients);
+
               _.remove(searchingClients, (client: Client) => {
-                return client.userId !== searchingClients[a].userId;
+                return client?.userId === searchingClients[a]?.userId;
               });
 
               _.remove(searchingClients, (client: Client) => {
-                return client.userId !== searchingClients[b].userId;
+                return client?.userId === searchingClients[b]?.userId;
               });
 
               printRemainingUsers(searchingClients);
@@ -97,7 +99,7 @@ export function printRemainingUsers(searchingClients: Client[]) {
   }
   console.log('Searching clients: ');
   searchingClients.forEach((client: Client) => {
-    console.log(`ClientId: ${client.userId}\nSocketId: ${client.socket}\nRadius: ${client.radius} km`);
+    console.log(`ClientId: ${client.userId}\nSocketId: ${client.socket.id}\nRadius: ${client.radius} km`);
   });
 }
 

@@ -1,4 +1,4 @@
-import { Client, MesssageModel, SearchingModel } from '../types';
+import { Client, MesssageModel, SearchingModel, updateLocationModel } from '../types';
 import sendMessage from '../socketEvents/incomingEvents/message.event';
 import {
   acceptGameEvent,
@@ -8,6 +8,7 @@ import {
   messageEvent,
   startGameEvent,
   startSearchingEvent,
+  updateLocationEvent,
 } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
@@ -57,6 +58,10 @@ export default (httpServer: HttpServer) => {
 
     socket.on(cancelGameEvent, () => {
       cancelGame(socket);
+    });
+
+    socket.on(updateLocationEvent, (locationModel: updateLocationModel) => {
+      console.log(locationModel);
     });
 
     socket.on('disconnect', () => {

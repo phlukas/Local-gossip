@@ -1,10 +1,10 @@
 import { Client, MesssageModel, SearchingModel } from '../types';
 import sendMessage from '../socketEvents/chatRoomEventGroup/incomingEvents/messageEvent';
-import { chatRoomEventGroup, messageEvent, startSearchingEvent } from '../eventConstants';
+import { cancelSearchingEvent, chatRoomEventGroup, messageEvent, startSearchingEvent } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
 import startSearching from '../socketEvents/userEventGroup/incomingEvents/startSearchingEvent';
-// import cancelSearching from '../socketEvents/userEventGroup/incomingEvents/cancelSearchingEvent';
+import cancelSearching from '../socketEvents/userEventGroup/incomingEvents/cancelSearchingEvent';
 import disconnectEvent from '../socketEvents/disconnectEvent';
 
 export default (httpServer: HttpServer) => {
@@ -23,9 +23,9 @@ export default (httpServer: HttpServer) => {
       startSearching(socket, searchingClients, searchingModel);
     });
 
-    // socket.on(cancelSearchingEvent, (searchingModel: SearchingModel) => {
-    //   cancelSearching(searchingClients, searchingModel);
-    // });
+    socket.on(cancelSearchingEvent, (searchingModel: SearchingModel) => {
+      cancelSearching(searchingClients, searchingModel);
+    });
 
     socket.on(chatRoomEventGroup, (messageModel: MesssageModel) => {
       if (messageModel.type === messageEvent) {

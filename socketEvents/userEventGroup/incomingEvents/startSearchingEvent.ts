@@ -3,6 +3,8 @@ import { Client, SearchingModel } from '../../../types';
 import { IUser, User } from '../../../models/user.model';
 import sendChatRoomFoundEvent from '../../chatRoomEventGroup/outgoingEvents/chatRoomFoundEvent';
 import _ from 'lodash';
+import { chatRoomNotFoundEvent } from '../../../eventConstants';
+import cancelSearchingEvent from './cancelSearchingEvent';
 
 export default async (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
   searchingClients.push({
@@ -11,14 +13,15 @@ export default async (socket: Socket, searchingClients: Client[], searchingModel
     radius: searchingModel.kilometers,
   });
 
-  await findPairAsync(searchingClients);
+  const foundPartner = await findPairAsync(searchingClients);
 
-  // if (!foundPartner) {
-  //   setTimeout(() => {
-  //     cancelSearchingEvent(searchingClients, searchingModel);
-  //     socket.emit(chatRoomNotFoundEvent);
-  //   }, 10000);
-  // }
+  if (!foundPartner) {
+    setTimeout(() => {
+      console.log(`Partner for socket ${socket.id} not found.`);
+      cancelSearchingEvent(searchingClients, searchingModel);
+      socket.emit(chatRoomNotFoundEvent);
+    }, 10000);
+  }
 };
 
 async function findPairAsync(searchingClients: Client[]): Promise<boolean> {

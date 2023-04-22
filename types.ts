@@ -12,6 +12,7 @@ export type SearchingModel = {
 };
 
 export type MesssageModel = {
+  type: string;
   userId: string;
   message: string;
 };

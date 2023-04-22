@@ -1,11 +1,11 @@
 import { Client, MesssageModel, SearchingModel } from '../types';
-import sendMessage from '../socketEvents/incomingEvents/message.event';
-import { cancelSearchingEvent, messageEvent, startSearchingEvent } from '../eventConstants';
+import sendMessage from '../socketEvents/chatRoomEventGroup/incomingEvents/messageEvent';
+import { chatRoomEventGroup, messageEvent, startSearchingEvent } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
-import startSearching from '../socketEvents/incomingEvents/startSearching.event';
-import cancelSearching from '../socketEvents/incomingEvents/cancelSearching.event';
-import disconnectEvent from '../socketEvents/disconnect.event';
+import startSearching from '../socketEvents/userEventGroup/incomingEvents/startSearchingEvent';
+// import cancelSearching from '../socketEvents/userEventGroup/incomingEvents/cancelSearchingEvent';
+import disconnectEvent from '../socketEvents/disconnectEvent';
 
 export default (httpServer: HttpServer) => {
   const io = new Server(httpServer, {
@@ -23,12 +23,14 @@ export default (httpServer: HttpServer) => {
       startSearching(socket, searchingClients, searchingModel);
     });
 
-    socket.on(cancelSearchingEvent, (searchingModel: SearchingModel) => {
-      cancelSearching(searchingClients, searchingModel);
-    });
+    // socket.on(cancelSearchingEvent, (searchingModel: SearchingModel) => {
+    //   cancelSearching(searchingClients, searchingModel);
+    // });
 
-    socket.on(messageEvent, (messageModel: MesssageModel) => {
-      sendMessage(messageModel, io, socket);
+    socket.on(chatRoomEventGroup, (messageModel: MesssageModel) => {
+      if (messageModel.type === messageEvent) {
+        sendMessage(messageModel, io, socket);
+      }
     });
 
     socket.on('disconnect', () => {

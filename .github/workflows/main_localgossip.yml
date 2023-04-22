@@ -27,11 +27,8 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
-      - name: Wait for 15 seconds
-        run: sleep 15
-
-      - name: Create tar archive
-        run: tar -czf node-app.tar.gz .
+      - name: Archive artifact for deployment
+        run: zip -r node-app.zip .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -53,7 +50,7 @@ jobs:
           name: node-app
 
       - name: Extract artifact
-        run: tar -xzf node-app.tar.gz
+        run: unzip node-app.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp

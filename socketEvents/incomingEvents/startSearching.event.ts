@@ -1,10 +1,10 @@
 import { Socket } from 'socket.io';
-import { Client, SearchingModel } from '../../../types';
-import { IUser, User } from '../../../models/user.model';
-import sendChatRoomFoundEvent from '../../chatRoomEventGroup/outgoingEvents/chatRoomFoundEvent';
+import { Client, SearchingModel } from '../../types';
+import { IUser, User } from '../../models/user.model';
+import sendChatRoomFoundEvent from '../outgoingEvents/chatRoomFound.event';
 import _ from 'lodash';
-import { chatRoomNotFoundEvent } from '../../../eventConstants';
-import cancelSearchingEvent from './cancelSearchingEvent';
+import { chatRoomNotFoundEvent } from '../../eventConstants';
+import cancelSearchingEvent from './cancelSearching.event';
 
 export default async (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
   searchingClients.push({

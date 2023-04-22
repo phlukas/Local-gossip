@@ -1,11 +1,11 @@
 import { Client, MesssageModel, SearchingModel } from '../types';
-import sendMessage from '../socketEvents/chatRoomEventGroup/incomingEvents/messageEvent';
+import sendMessage from '../socketEvents/incomingEvents/message.event';
 import { cancelSearchingEvent, messageEvent, startSearchingEvent } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
-import startSearching from '../socketEvents/userEventGroup/incomingEvents/startSearchingEvent';
-import cancelSearching from '../socketEvents/userEventGroup/incomingEvents/cancelSearchingEvent';
-import disconnectEvent from '../socketEvents/disconnectEvent';
+import startSearching from '../socketEvents/incomingEvents/startSearching.event';
+import cancelSearching from '../socketEvents/incomingEvents/cancelSearching.event';
+import disconnectEvent from '../socketEvents/disconnect.event';
 
 export default (httpServer: HttpServer) => {
   const io = new Server(httpServer, {

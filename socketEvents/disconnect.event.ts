@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io';
 import { Client } from '../types';
-import { printRemainingUsers } from './userEventGroup/incomingEvents/startSearchingEvent';
+import { printRemainingUsers } from './incomingEvents/startSearching.event';
 import _ from 'lodash';
 
 export default (searchingClients: Client[], socket: Socket) => {

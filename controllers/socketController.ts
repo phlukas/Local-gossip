@@ -21,6 +21,7 @@ export default (httpServer: HttpServer) => {
 
     socket.on(startSearchingEvent, (searchingModel: SearchingModel) => {
       startSearching(socket, searchingClients, searchingModel);
+      socket.emit('test');
     });
 
     socket.on(cancelSearchingEvent, (searchingModel: SearchingModel) => {

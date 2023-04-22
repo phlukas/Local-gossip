@@ -19,7 +19,7 @@ export default async (socket: Socket, searchingClients: Client[], searchingModel
     setTimeout(() => {
       console.log(`Partner for socket ${socket.id} not found.`);
       cancelSearchingEvent(searchingClients, searchingModel);
-      socket.emit(chatRoomNotFoundEvent);
+      socket.emit(chatRoomNotFoundEvent, {});
     }, 10000);
   }
 };

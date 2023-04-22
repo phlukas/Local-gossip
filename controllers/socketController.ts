@@ -1,6 +1,6 @@
 import { Client, MesssageModel, SearchingModel } from '../types';
 import sendMessage from '../socketEvents/chatRoomEventGroup/incomingEvents/messageEvent';
-import { cancelSearchingEvent, chatRoomEventGroup, messageEvent, startSearchingEvent } from '../eventConstants';
+import { cancelSearchingEvent, messageEvent, startSearchingEvent } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
 import startSearching from '../socketEvents/userEventGroup/incomingEvents/startSearchingEvent';
@@ -27,10 +27,8 @@ export default (httpServer: HttpServer) => {
       cancelSearching(searchingClients, searchingModel);
     });
 
-    socket.on(chatRoomEventGroup, (messageModel: MesssageModel) => {
-      if (messageModel.type === messageEvent) {
-        sendMessage(messageModel, io, socket);
-      }
+    socket.on(messageEvent, (messageModel: MesssageModel) => {
+      sendMessage(messageModel, io, socket);
     });
 
     socket.on('disconnect', () => {

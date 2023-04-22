@@ -27,13 +27,8 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
-      - name: Wait for build to complete
-        uses: zenaton/wait-for@v1
-        with:
-          time-out: 600 # Maximum time to wait in seconds
-          sleep: 10 # Interval between retries in seconds
-          condition: success # Condition to wait for
-          checkers: build-status # Checker to use
+      - name: Wait for 15 seconds
+        run: sleep 15
 
       - name: Create tar archive
         run: tar -czf node-app.tar.gz .

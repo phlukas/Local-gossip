@@ -7,12 +7,12 @@ export type Client = {
 };
 
 export type SearchingModel = {
-  type: string;
   userId: string;
   kilometers: number;
 };
 
 export type MesssageModel = {
+  type: string;
   userId: string;
   message: string;
 };

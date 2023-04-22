@@ -7,6 +7,7 @@ export type Client = {
 };
 
 export type SearchingModel = {
+  type: string;
   userId: string;
   kilometers: number;
 };

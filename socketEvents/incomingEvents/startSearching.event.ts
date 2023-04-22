@@ -67,8 +67,6 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
               sendChatRoomFoundEvent(searchingClients[a].socket, res._id, dist);
               sendChatRoomFoundEvent(searchingClients[b].socket, res._id, dist);
 
-              console.log(searchingClients);
-
               _.remove(searchingClients, (client: Client) => {
                 return client?.userId === searchingClients[a]?.userId;
               });

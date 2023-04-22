@@ -23,6 +23,10 @@
   },
   "homepage": "https://github.com/phlukas/Local-gossip#readme",
   "dependencies": {
+    "body-parser": "^1.19.2",
+    "dotenv": "^16.0.0",
+    "helmet": "^5.0.2",
+    "ts-essentials": "^9.1.2",
     "cross-env": "^7.0.3",
     "express": "^4.17.3",
     "express-list-endpoints": "^6.0.0",

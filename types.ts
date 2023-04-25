@@ -4,6 +4,7 @@ export type Client = {
   socket: Socket;
   userId: string;
   radius: number;
+  notFoundTimeout: NodeJS.Timeout;
 };
 
 export type SearchingModel = {

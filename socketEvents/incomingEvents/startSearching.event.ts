@@ -8,22 +8,23 @@ import cancelSearchingEvent from './cancelSearching.event';
 import { ChatRoom, IChatRoom } from '../../models/chatRoom.model';
 
 export default async (socket: Socket, searchingClients: Client[], searchingModel: SearchingModel) => {
-  searchingClients.push({
-    socket: socket,
-    userId: searchingModel.userId,
-    radius: searchingModel.kilometers,
-  });
-
-  const notFoundTimer = setTimeout(() => {
+  const notFoundTimeout = setTimeout(() => {
     console.log(`Partner for socket ${socket.id} not found.`);
     cancelSearchingEvent(searchingClients, searchingModel);
     socket.emit(chatRoomNotFoundEvent);
   }, 15000);
 
-  await findPairAsync(searchingClients, notFoundTimer);
+  searchingClients.push({
+    socket: socket,
+    userId: searchingModel.userId,
+    radius: searchingModel.kilometers,
+    notFoundTimeout: notFoundTimeout,
+  });
+
+  await findPairAsync(searchingClients);
 };
 
-async function findPairAsync(searchingClients: Client[], notFoundTimer: NodeJS.Timeout): Promise<boolean> {
+async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
   for (let a = 0; a < searchingClients.length - 1; a++) {
     for (let b = a + 1; b < searchingClients.length; b++) {
       const userA: IUser | null = await User.findById(searchingClients[a].userId);
@@ -59,7 +60,8 @@ async function findPairAsync(searchingClients: Client[], notFoundTimer: NodeJS.T
             if (err) {
               console.error('Cannnot save chatRoom: ' + err);
             } else {
-              clearTimeout(notFoundTimer);
+              clearTimeout(searchingClients[a].notFoundTimeout);
+              clearTimeout(searchingClients[b].notFoundTimeout);
 
               searchingClients[a].socket.join(res._id);
               searchingClients[b].socket.join(res._id);

@@ -1,5 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { exitChatRoomEvent } from '../../eventConstants';
+import { ChatRoom } from '../../models/chatRoom.model';
 
 export default (socket: Socket, io: Server) => {
   console.error(`${socket.id} leaving room.`);
@@ -13,6 +14,11 @@ export default (socket: Socket, io: Server) => {
   if (lastAddedRoom) {
     socket.to(lastAddedRoom).emit(exitChatRoomEvent);
     io.sockets.socketsLeave(lastAddedRoom);
+    ChatRoom.findByIdAndDelete(lastAddedRoom, (err: any) => {
+      if (err) {
+        console.error('Cannot delete a room. Continuing...');
+      }
+    });
   } else {
     console.error('Cannot leave a room because there are no rooms.');
   }

@@ -7,7 +7,7 @@ export type Client = {
 };
 
 export type SearchingModel = {
-  userId: string;
+  userId: string; //TODO: we can use socket itself instead of userId
   kilometers: number;
 };
 

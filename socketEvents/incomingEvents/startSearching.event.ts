@@ -16,13 +16,13 @@ export default async (socket: Socket, searchingClients: Client[], searchingModel
 
   await findPairAsync(searchingClients);
 
-  if (searchingClients.find((x) => x.userId === searchingModel.userId) !== undefined) {
-    setTimeout(() => {
+  setTimeout(() => {
+    if (searchingClients.find((x) => x.userId === searchingModel.userId) !== undefined) {
       console.log(`Partner for socket ${socket.id} not found.`);
       cancelSearchingEvent(searchingClients, searchingModel);
       socket.emit(chatRoomNotFoundEvent);
-    }, 10000);
-  }
+    }
+  }, 10000);
 };
 
 async function findPairAsync(searchingClients: Client[]): Promise<boolean> {

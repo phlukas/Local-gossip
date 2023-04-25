@@ -30,8 +30,6 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
       const userA: IUser | null = await User.findById(searchingClients[a].userId);
       const userB: IUser | null = await User.findById(searchingClients[b].userId);
 
-      console.log(searchingClients);
-
       if (
         userA === null ||
         userB === null ||
@@ -77,8 +75,6 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
                 return client?.userId === searchingClients[b]?.userId;
               });
 
-              printRemainingUsers(searchingClients);
-
               return true;
             }
           }
@@ -88,7 +84,6 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
       }
     }
   }
-  printRemainingUsers(searchingClients);
   return false;
 }
 

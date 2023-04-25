@@ -12,7 +12,7 @@ import {
 } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
-import startSearching from '../socketEvents/incomingEvents/startSearching.event';
+import startSearching, { printRemainingUsers } from '../socketEvents/incomingEvents/startSearching.event';
 import cancelSearching from '../socketEvents/incomingEvents/cancelSearching.event';
 import disconnectEvent from '../socketEvents/disconnect.event';
 import exitChatRoom from '../socketEvents/incomingEvents/exitChatRoom.event';
@@ -28,6 +28,10 @@ export default (httpServer: HttpServer) => {
   });
 
   const searchingClients: Client[] = [];
+
+  setInterval(() => {
+    console.log(printRemainingUsers);
+  }, 5000);
 
   io.on('connection', (socket: Socket) => {
     console.log(`Socket with ID ${socket.id} connected.`);

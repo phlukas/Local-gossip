@@ -3,7 +3,7 @@ import { exitChatRoomEvent } from '../../eventConstants';
 import { ChatRoom } from '../../models/chatRoom.model';
 
 export default (socket: Socket, io: Server) => {
-  console.error(`${socket.id} leaving room.`);
+  console.log(`${socket.id} leaving room.`);
 
   let lastAddedRoom;
 

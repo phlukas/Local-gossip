@@ -14,9 +14,9 @@ export default async (socket: Socket, searchingClients: Client[], searchingModel
     radius: searchingModel.kilometers,
   });
 
-  const foundPartner = await findPairAsync(searchingClients);
+  await findPairAsync(searchingClients);
 
-  if (!foundPartner) {
+  if (searchingClients.find((x) => x.userId === searchingModel.userId) !== undefined) {
     setTimeout(() => {
       console.log(`Partner for socket ${socket.id} not found.`);
       cancelSearchingEvent(searchingClients, searchingModel);

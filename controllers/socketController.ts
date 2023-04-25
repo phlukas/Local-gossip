@@ -30,7 +30,7 @@ export default (httpServer: HttpServer) => {
   const searchingClients: Client[] = [];
 
   setInterval(() => {
-    console.log(printRemainingUsers);
+    console.log(printRemainingUsers(searchingClients));
   }, 5000);
 
   io.on('connection', (socket: Socket) => {
@@ -65,7 +65,7 @@ export default (httpServer: HttpServer) => {
     });
 
     socket.on(updateLocationEvent, (locationModel: updateLocationModel) => {
-      console.log(locationModel);
+      console.error(locationModel);
     });
 
     socket.on('disconnect', () => {

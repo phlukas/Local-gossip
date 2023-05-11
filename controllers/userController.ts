@@ -21,7 +21,7 @@ router.post('/login', (req, res) =>{
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/register', (req, res) => {
   const user = new User();
 
   user.dateCreated = Date.now();

@@ -4,13 +4,19 @@ import { User } from '../models/user.model';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  User.find({}, (err, result) => {
+  User.find({}, (err:any, result:any) => {
     res.send(result);
   });
 });
 
 router.get('/:id', (req, res) => {
   User.findById(req.params.id, (err: express.Errback, result: express.Response) => {
+    res.send(result);
+  });
+});
+
+router.post('/login', (req, res) =>{
+  User.find({name: req.body.name, password: req.body.password}, (err:express.Errback, result:express.Response) =>{
     res.send(result);
   });
 });

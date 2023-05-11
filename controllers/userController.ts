@@ -16,7 +16,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/login', (req, res) =>{
-  User.find({name: req.body.name, password: req.body.password}, (err:express.Errback, result:express.Response) =>{
+  User.findOne({name: req.body.name, password: req.body.password}, (err:express.Errback, result:express.Response) =>{
     res.send(result);
   });
 });

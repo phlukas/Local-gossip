@@ -15,6 +15,12 @@ router.get('/:id', (req, res) => {
   });
 });
 
+router.delete('/:id', (req, res) =>{
+  User.findByIdAndDelete(req.params.id, (err: express.Errback, result: express.Response) =>{
+    res.send(result);
+  });
+});
+
 router.post('/login', (req, res) =>{
   User.findOne({name: req.body.name, password: req.body.password}, (err:express.Errback, result:express.Response) =>{
     res.send(result);

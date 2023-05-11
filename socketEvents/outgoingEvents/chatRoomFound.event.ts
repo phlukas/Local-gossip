@@ -1,10 +1,12 @@
 import { Socket } from 'socket.io';
-import { chatRoomFoundEvent, startSearchingEvent } from '../../eventConstants';
+import { startSearchingEvent } from '../../eventConstants';
+import { IUser } from '../../models/user.model';
 
-export default (socket: Socket, chatRoomId: string, dist: number) => {
+export default (socket: Socket, chatRoomId: string, dist: number, userA: IUser | null, userB: IUser | null) => {
   socket.emit(startSearchingEvent, {
-    type: chatRoomFoundEvent,
-    chatRoomId: chatRoomId,
-    partnerDistance: dist,
+    chatRoomId,
+    dist,
+    userA,
+    userB,
   });
 };

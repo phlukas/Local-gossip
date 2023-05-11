@@ -13,6 +13,6 @@ export default (socket: Socket) => {
   if (lastAddedRoom) {
     socket.to(lastAddedRoom).emit(cancelGameEvent);
   } else {
-    console.error('Message failed to send - socket was not in the valid room.');
+    console.log('Message failed to send - socket was not in the valid room.');
   }
 };

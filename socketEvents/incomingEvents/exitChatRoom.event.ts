@@ -9,17 +9,19 @@ export default (socket: Socket, io: Server) => {
 
   socket.rooms.forEach((roomId) => {
     lastAddedRoom = roomId;
+    socket.to(roomId).emit(exitChatRoomEvent);
   });
 
   if (lastAddedRoom) {
-    socket.to(lastAddedRoom).emit(exitChatRoomEvent);
+    socket.leave(lastAddedRoom);
     io.sockets.socketsLeave(lastAddedRoom);
+    io.sockets.in(lastAddedRoom).disconnectSockets; // new method, maybe it will help to disconnect sockets from the room
     ChatRoom.findByIdAndDelete(lastAddedRoom, (err: any) => {
       if (err) {
-        console.error('Cannot delete a room. Continuing...');
+        console.log('Cannot delete a room. Continuing...');
       }
     });
   } else {
-    console.error('Cannot leave a room because there are no rooms.');
+    console.log('Cannot leave a room because there are no rooms.');
   }
 };

@@ -16,10 +16,10 @@ export default (socket: Socket) => {
 
     ChatRoom.findByIdAndUpdate(lastAddedRoom, { isGameOn: true }, (err: unknown) => {
       if (err) {
-        console.error('Cannnot update chatRoom: ' + err);
+        console.log('Cannnot update chatRoom: ' + err);
       }
     });
   } else {
-    console.error('Message failed to send - socket was not in the valid room.');
+    console.log('Message failed to send - socket was not in the valid room.');
   }
 };

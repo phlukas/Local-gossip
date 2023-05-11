@@ -15,6 +15,6 @@ export default (messageModel: MesssageModel, io: Server, socket: Socket) => {
   if (lastAddedRoom) {
     sendMessageEvent(io, messageModel, lastAddedRoom);
   } else {
-    console.error('Message failed to send - socket was not in the valid room.');
+    console.log('Message failed to send - socket was not in the valid room.');
   }
 };

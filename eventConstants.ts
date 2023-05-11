@@ -1,7 +1,6 @@
 export const startSearchingEvent = 'startSearching';
 export const cancelSearchingEvent = 'cancelSearching';
 
-export const chatRoomFoundEvent = 'chatRoomFound';
 export const chatRoomNotFoundEvent = 'chatRoomNotFound';
 export const exitChatRoomEvent = 'exitChatRoom';
 
@@ -12,5 +11,3 @@ export const acceptGameEvent = 'acceptGame';
 export const cancelGameEvent = 'cancelGame';
 
 export const updateLocationEvent = 'updateLocation';
-
-export const chatRoomEventGroup = 'chatRoom'; // We can't delete this because prod will crash

@@ -6,14 +6,14 @@ export interface IUser extends Document {
   email?: string;
   password?: string;
   imageUrl?: string;
-  rank?: string;
   latitude?: number;
   longitude?: number;
+  invisibleUntil?: number;
+  frozenUntil?: number;
   selectedRadius?: number;
-  showLocation?: boolean;
-  showProfile?: boolean;
   chatRoomId?: string;
   socketId?: string;
+  isAdmin?: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -32,29 +32,29 @@ const userSchema = new Schema<IUser>({
   imageUrl: {
     type: String,
   },
-  rank: {
-    type: String,
-  },
   latitude: {
     type: Number,
   },
   longitude: {
     type: Number,
   },
-  selectedRadius: {
+  invisibleUntil: {
     type: Number,
   },
-  showLocation: {
-    type: Boolean,
+  frozenUntil: {
+    type: Number,
   },
-  showProfile: {
-    type: Boolean,
+  selectedRadius: {
+    type: Number,
   },
   chatRoomId: {
     type: String,
   },
   socketId: {
     type: String,
+  },
+  isAdmin: {
+    type: Boolean,
   },
 });
 

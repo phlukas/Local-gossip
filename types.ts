@@ -13,7 +13,6 @@ export type SearchingModel = {
 };
 
 export type MesssageModel = {
-  type: string; // We can't delete this because prod will crash
   userId: string;
   message: string;
 };

@@ -12,6 +12,10 @@ export default async (socket: Socket, searchingClients: Client[], searchingModel
     console.log(`Partner for socket ${socket.id} not found.`);
     cancelSearchingEvent(searchingClients, searchingModel);
     socket.emit(chatRoomNotFoundEvent);
+
+    _.remove(searchingClients, (client: Client) => {
+      return client?.socket.id === socket.id;
+    });
   }, 15000);
 
   searchingClients.push({
@@ -38,7 +42,7 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
         userA.longitude === undefined ||
         userB.longitude === undefined
       ) {
-        console.error('Users data was invalid while searching pair. Continuing search.');
+        console.log('Users data was invalid while searching pair. Continuing search.');
         continue;
       }
 
@@ -56,7 +60,7 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
             }
           ) => {
             if (err) {
-              console.error('Cannnot save chatRoom: ' + err);
+              console.log('Cannnot save chatRoom: ' + err);
             } else {
               clearTimeout(searchingClients[a].notFoundTimeout);
               clearTimeout(searchingClients[b].notFoundTimeout);
@@ -64,8 +68,8 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
               searchingClients[a].socket.join(res._id);
               searchingClients[b].socket.join(res._id);
 
-              sendChatRoomFoundEvent(searchingClients[a].socket, res._id, dist);
-              sendChatRoomFoundEvent(searchingClients[b].socket, res._id, dist);
+              sendChatRoomFoundEvent(searchingClients[a].socket, res._id, dist, userA, userB);
+              sendChatRoomFoundEvent(searchingClients[b].socket, res._id, dist, userA, userB);
 
               _.remove(searchingClients, (client: Client) => {
                 return client?.userId === searchingClients[a]?.userId;

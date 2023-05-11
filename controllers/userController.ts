@@ -23,12 +23,9 @@ router.post('/', (req, res) => {
   user.email = req.body.email;
   user.password = req.body.password;
   user.imageUrl = req.body.imageUrl;
-  user.rank = req.body.rank;
   user.latitude = req.body.latitude;
   user.longitude = req.body.longitude;
   user.selectedRadius = req.body.selectedRadius;
-  user.showLocation = req.body.showLocation;
-  user.showProfile = req.body.showProfile;
 
   user.save((err, result) => {
     if (err) {

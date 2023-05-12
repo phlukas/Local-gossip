@@ -68,15 +68,13 @@ async function findPairAsync(searchingClients: Client[]): Promise<boolean> {
               searchingClients[a].socket.join(res._id);
               searchingClients[b].socket.join(res._id);
 
+              console.log('Joined room: ' + res._id);
+
               sendChatRoomFoundEvent(searchingClients[a].socket, res._id, dist, userA, userB);
               sendChatRoomFoundEvent(searchingClients[b].socket, res._id, dist, userA, userB);
 
               _.remove(searchingClients, (client: Client) => {
-                return client?.userId === searchingClients[a]?.userId;
-              });
-
-              _.remove(searchingClients, (client: Client) => {
-                return client?.userId === searchingClients[b]?.userId;
+                return client?.userId === searchingClients[a]?.userId || searchingClients[b]?.userId;
               });
 
               return true;

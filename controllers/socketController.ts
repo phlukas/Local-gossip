@@ -31,7 +31,7 @@ export default (httpServer: HttpServer) => {
 
   setInterval(() => {
     printRemainingUsers(searchingClients);
-  }, 5000);
+  }, 15000);
 
   io.on('connection', (socket: Socket) => {
     console.log(`Socket with ID ${socket.id} connected.`);

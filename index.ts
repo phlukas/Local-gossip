@@ -5,6 +5,7 @@ import message from './controllers/messageController';
 import mongoose from 'mongoose';
 import listEndpoints from 'express-list-endpoints';
 import socketManager from './controllers/socketController';
+import { ChatRoom } from './models/chatRoom.model';
 
 const app = express();
 const httpServer = createServer(app);
@@ -20,7 +21,11 @@ mongoose.connect(databaseUrl, {}, (err: unknown) => {
   }
 });
 
-//Start socket.io
+ChatRoom.deleteMany({}, (err: any) => {
+  if (err) {
+    console.log('Cannot delete rooms. Continuing...');
+  }
+});
 
 socketManager(httpServer);
 

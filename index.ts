@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import user from './controllers/userController';
 import message from './controllers/messageController';
+import chatRoom from './controllers/chatRoomController';
 import mongoose from 'mongoose';
 import listEndpoints from 'express-list-endpoints';
 import socketManager from './controllers/socketController';
@@ -36,6 +37,8 @@ app.use(express.json());
 app.use('/user', user);
 
 app.use('/message', message);
+
+app.use('/chatRoom', chatRoom);
 
 app.route('/').get((req, res) => {
   res.send(listEndpoints(app));

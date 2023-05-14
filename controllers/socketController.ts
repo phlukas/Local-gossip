@@ -20,8 +20,10 @@ import startGame from '../socketEvents/incomingEvents/startGame.event';
 import acceptGame from '../socketEvents/incomingEvents/acceptGame.event';
 import cancelGame from '../socketEvents/incomingEvents/cancelGame.event';
 
+export let io: Server | null = null;
+
 export default (httpServer: HttpServer) => {
-  const io = new Server(httpServer, {
+  io = new Server(httpServer, {
     cors: {
       origin: '*',
     },

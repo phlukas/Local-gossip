@@ -9,7 +9,7 @@ export default (socket: Socket) => {
   socket.rooms.forEach((roomId) => {
     lastAddedRoom = roomId;
   });
-
+  
   if (lastAddedRoom) {
     socket.to(lastAddedRoom).emit(cancelGameEvent);
   } else {

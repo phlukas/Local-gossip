@@ -9,6 +9,8 @@ import {
   startGameEvent,
   startSearchingEvent,
   updateLocationEvent,
+  freezePlayerEvent,
+  invisiblePlayerEvent,
 } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
@@ -19,6 +21,8 @@ import exitChatRoom from '../socketEvents/incomingEvents/exitChatRoom.event';
 import startGame from '../socketEvents/incomingEvents/startGame.event';
 import acceptGame from '../socketEvents/incomingEvents/acceptGame.event';
 import cancelGame from '../socketEvents/incomingEvents/cancelGame.event';
+import freezePlayer from '../socketEvents/incomingEvents/freezePlayer.event';
+import invisiblePlayer from '../socketEvents/incomingEvents/invisiblePlayer.event';
 
 export default (httpServer: HttpServer) => {
   const io = new Server(httpServer, {
@@ -71,5 +75,14 @@ export default (httpServer: HttpServer) => {
     socket.on('disconnect', () => {
       disconnectEvent(searchingClients, socket);
     });
+
+    socket.on(freezePlayerEvent, (User: updateLocationModel) => {
+      freezePlayer(socket, User);
+    });
+
+    socket.on(invisiblePlayerEvent, (User: updateLocationModel) => {
+      invisiblePlayer(socket, User);
+    });
+
   });
 };

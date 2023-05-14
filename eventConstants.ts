@@ -11,4 +11,10 @@ export const startGameEvent = 'startGame';
 export const acceptGameEvent = 'acceptGame';
 export const cancelGameEvent = 'cancelGame';
 
+export const freezePlayerEvent = 'freezePlayer'
+export const invisiblePlayerEvent = 'invisiblePlayer'
+export const stopFreezePlayerEvent = 'stopFreezePlayer'
+export const stopInvisiblePlayerEvent = 'stopInvisiblePlayer'
+export const exitGameEvent = 'exitGame';
+
 export const updateLocationEvent = 'updateLocation';

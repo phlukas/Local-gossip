@@ -2,7 +2,7 @@ import { Server, Socket } from 'socket.io';
 import { MesssageModel } from '../../types';
 import sendMessageEvent from '../outgoingEvents/message.event';
 
-export default (messageModel: MesssageModel, io: Server, socket: Socket) => {
+export default (messageModel: MesssageModel, io: Server | null, socket: Socket) => {
   console.log('Sending message:');
   console.log(messageModel);
 

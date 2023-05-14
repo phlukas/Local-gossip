@@ -24,8 +24,10 @@ import cancelGame from '../socketEvents/incomingEvents/cancelGame.event';
 import freezePlayer from '../socketEvents/incomingEvents/freezePlayer.event';
 import invisiblePlayer from '../socketEvents/incomingEvents/invisiblePlayer.event';
 
+export let io: Server | null = null;
+
 export default (httpServer: HttpServer) => {
-  const io = new Server(httpServer, {
+  io = new Server(httpServer, {
     cors: {
       origin: '*',
     },

@@ -27,8 +27,10 @@ import invisiblePlayer from '../socketEvents/incomingEvents/invisiblePlayer.even
 import exitGame from '../socketEvents/incomingEvents/exitGame.event';
 import updateLocation from '../socketEvents/incomingEvents/updateLocation.event';
 
+export let io: Server | null = null;
+
 export default (httpServer: HttpServer) => {
-  const io = new Server(httpServer, {
+   io = new Server(httpServer, {
     cors: {
       origin: '*',
     },

@@ -1,16 +1,15 @@
 import { Socket } from 'socket.io';
 import { stopInvisiblePlayerEvent } from '../../eventConstants';
 import { User } from '../../models/user.model';
-import { updateLocationModel } from '../../types';
 
-export default (socket: Socket,  user: updateLocationModel) => {
+export default (socket: Socket,  user: {userid:string}) => {
   console.log(`Received invisible event from ${socket.id}.`);
    
   const timeOutTime = 10000; // 10 seconds
   
-  User.findByIdAndUpdate(user.userId, {invisibleUntil: Date.now() + timeOutTime},(err:any) =>{
+  User.findByIdAndUpdate(user.userid, {invisibleUntil: Date.now() + timeOutTime},(err:any) =>{
     if (err) {
-        console.log(`Cannot update user.invisibleUntil ${user.userId}.`);
+        console.log(`Cannot update user.invisibleUntil ${user.userid}.`);
       }
   });
 

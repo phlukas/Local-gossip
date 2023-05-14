@@ -11,6 +11,7 @@ import {
   updateLocationEvent,
   freezePlayerEvent,
   invisiblePlayerEvent,
+  exitGameEvent,
 } from '../eventConstants';
 import { Server, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
@@ -23,11 +24,11 @@ import acceptGame from '../socketEvents/incomingEvents/acceptGame.event';
 import cancelGame from '../socketEvents/incomingEvents/cancelGame.event';
 import freezePlayer from '../socketEvents/incomingEvents/freezePlayer.event';
 import invisiblePlayer from '../socketEvents/incomingEvents/invisiblePlayer.event';
-
-export let io: Server | null = null;
+import exitGame from '../socketEvents/incomingEvents/exitGame.event';
+import updateLocation from '../socketEvents/incomingEvents/updateLocation.event';
 
 export default (httpServer: HttpServer) => {
-  io = new Server(httpServer, {
+  const io = new Server(httpServer, {
     cors: {
       origin: '*',
     },
@@ -71,19 +72,23 @@ export default (httpServer: HttpServer) => {
     });
 
     socket.on(updateLocationEvent, (locationModel: updateLocationModel) => {
-      console.log(locationModel);
+      updateLocation(socket, locationModel);
     });
 
     socket.on('disconnect', () => {
       disconnectEvent(searchingClients, socket);
     });
 
-    socket.on(freezePlayerEvent, (User: updateLocationModel) => {
-      freezePlayer(socket, User);
+    socket.on(freezePlayerEvent, (user: {userid:string}) => {
+      freezePlayer(io, socket, user);
     });
 
-    socket.on(invisiblePlayerEvent, (User: updateLocationModel) => {
-      invisiblePlayer(socket, User);
+    socket.on(invisiblePlayerEvent, (user: {userid:string}) => {
+      invisiblePlayer(io, socket, user);
+    });
+
+    socket.on(exitGameEvent, () =>{
+      exitGame(socket);
     });
 
   });

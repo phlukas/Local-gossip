@@ -39,10 +39,10 @@ const userSchema = new Schema<IUser>({
     type: Number,
   },
   invisibleUntil: {
-    type: Number,
+    type: Date,
   },
   frozenUntil: {
-    type: Number,
+    type: Date,
   },
   selectedRadius: {
     type: Number,

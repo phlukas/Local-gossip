@@ -15,11 +15,11 @@ export default (io: Server | null,socket: Socket,  user: {userid:string}) => {
   });
 
   if (lastAddedRoom){
-      console.log(`Sending Freeze event from ${socket.id}.`);
+      console.log(`Sending invisible event from ${socket.id}.`);
       socket.to(lastAddedRoom).emit(invisiblePlayerEvent, user);
     }
   else{
-      console.log(`Failed to send stopFreeze.`);
+      console.log(`Failed to send invisible.`);
   }
 
   User.findByIdAndUpdate(user.userid, {invisibleUntil: Date.now() + timeOutTime},(err:any) =>{

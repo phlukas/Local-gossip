@@ -1,5 +1,6 @@
 import { Socket } from 'socket.io';
 import { ChatRoom } from '../../models/chatRoom.model';
+import { exitGameEvent } from '../../eventConstants';
 
 export default (socket: Socket) => {
   console.log(`Received exit Game Event from ${socket.id}.`);
@@ -11,6 +12,8 @@ export default (socket: Socket) => {
   });
 
   if (lastAddedRoom) {
+    
+    socket.to(lastAddedRoom).emit(exitGameEvent);
 
     ChatRoom.findByIdAndUpdate(lastAddedRoom, { isGameOn: false }, (err: unknown) => {
       if (err) {

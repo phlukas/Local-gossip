@@ -6,7 +6,8 @@ export default (socket: Socket, chatRoomId: string, dist: number, userA: IUser |
   socket.emit(chatRoomFoundEvent, {
     chatRoomId,
     dist,
-    userA,
-    userB,
+    users: [userA, userB],
+    // userA,
+    // userB,
   });
 };

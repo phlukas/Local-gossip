@@ -30,7 +30,7 @@ import updateLocation from '../socketEvents/incomingEvents/updateLocation.event'
 export let io: Server | null = null;
 
 export default (httpServer: HttpServer) => {
-   io = new Server(httpServer, {
+  io = new Server(httpServer, {
     cors: {
       origin: '*',
     },
@@ -81,15 +81,15 @@ export default (httpServer: HttpServer) => {
       disconnectEvent(searchingClients, socket);
     });
 
-    socket.on(freezePlayerEvent, (user: {userid:string}) => {
+    socket.on(freezePlayerEvent, (user: { id: string }) => {
       freezePlayer(io, socket, user);
     });
 
-    socket.on(invisiblePlayerEvent, (user: {userid:string}) => {
+    socket.on(invisiblePlayerEvent, (user: { id: string }) => {
       invisiblePlayer(io, socket, user);
     });
 
-    socket.on(exitGameEvent, () =>{
+    socket.on(exitGameEvent, () => {
       exitGame(socket);
     });
 

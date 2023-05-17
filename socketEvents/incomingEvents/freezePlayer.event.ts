@@ -17,15 +17,6 @@ export default (io: Server | null, socket: Socket, user: { id: string }) => {
   if (lastAddedRoom) {
     console.log(`Sending Freeze event from ${socket.id}.`);
     socket.to(lastAddedRoom).emit(freezePlayerEvent, user);
-  }
-  else {
-    console.log(`Failed to send Freeze.`);
-
-    User.findByIdAndUpdate(user.id, { frozenUntil: Date.now() + timeOutTime }, (err: any) => {
-      if (err) {
-        console.log(`Cannot update user.frozenUntil ${user.id}.`);
-      }
-    });
 
     setTimeout(() => {
       let lastAddedRoom;
@@ -42,6 +33,18 @@ export default (io: Server | null, socket: Socket, user: { id: string }) => {
         console.log(`Failed to send stopFreeze.`);
       }
     }, timeOutTime);
-
   }
+  else {
+    console.log(`Failed to send Freeze.`);
+  }
+
+  User.findByIdAndUpdate(user.id, { frozenUntil: Date.now() + timeOutTime }, (err: any) => {
+    if (err) {
+      console.log(`Cannot update user.frozenUntil ${user.id}.`);
+    }
+  });
+
+
+
+
 };

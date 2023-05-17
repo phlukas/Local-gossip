@@ -17,6 +17,22 @@ export default (io: Server | null, socket: Socket, user: { id: string }) => {
   if (lastAddedRoom) {
     console.log(`Sending invisible event from ${socket.id}.`);
     socket.to(lastAddedRoom).emit(invisiblePlayerEvent, user);
+
+    setTimeout(() => {
+      let lastAddedRoom;
+
+      socket.rooms.forEach((roomId) => {
+        lastAddedRoom = roomId;
+      });
+
+      if (lastAddedRoom) {
+        console.log(`Sending stopInvisiblePlayer event from ${socket.id}.`);
+        io?.to(lastAddedRoom).emit(stopInvisiblePlayerEvent, user);
+      }
+      else {
+        console.log(`Failed to send stopInvisible.`);
+      }
+    }, timeOutTime);
   }
   else {
     console.log(`Failed to send invisible.`);
@@ -28,19 +44,5 @@ export default (io: Server | null, socket: Socket, user: { id: string }) => {
     }
   });
 
-  setTimeout(() => {
-    let lastAddedRoom;
 
-    socket.rooms.forEach((roomId) => {
-      lastAddedRoom = roomId;
-    });
-
-    if (lastAddedRoom) {
-      console.log(`Sending stopInvisiblePlayer event from ${socket.id}.`);
-      io?.to(lastAddedRoom).emit(stopInvisiblePlayerEvent, user);
-    }
-    else {
-      console.log(`Failed to send stopInvisible.`);
-    }
-  }, timeOutTime);
 };

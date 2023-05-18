@@ -19,8 +19,9 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   ChatRoom.findByIdAndDelete(req.params.id, (err: express.Errback, result: express.Response) => {
-    io?.sockets.socketsLeave(req.params.id);
     io?.to(req.params.id).emit(exitChatRoomEvent);
+    io?.sockets.socketsLeave(req.params.id);
+
     res.send(result);
   });
 });
